@@ -2,6 +2,7 @@ name: Java CI with Maven
 
 env:
   NAME_PORT_BACK: -替换1
+  NAME_PORT: -替换2
 
 # 触发条件：push 到 master 分支时触发
 on:
@@ -44,6 +45,6 @@ jobs:
           SOURCE: target/${{ env.NAME_PORT_BACK }}.jar
           REMOTE_HOST: ${{ secrets.SERVER_HOST }}
           REMOTE_USER: root
-          TARGET: /var/lib/docker/volumes/${{ env.NAME_PORT_BACK }}/_data/${{ env.NAME_PORT_BACK }}.jar
+          TARGET: /var/lib/docker/volumes/${{ env.NAME_PORT }}/_data/${{ env.NAME_PORT }}.jar
           SCRIPT_AFTER: |
-            docker restart ${{ env.NAME_PORT_BACK }}
+            docker restart ${{ env.NAME_PORT }}
