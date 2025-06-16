@@ -64,7 +64,7 @@ sa-token:
   # 打印 banner
   is-print: false
   # token 名称（同时也是 cookie 名称）
-  token-name: satoken-myproject
+  token-name: satoken--替换2
   # 是否读取 cookie 和 body 中的 token，全部不读
   # 前端只往请求头写token
   # 后端不写入响应头token

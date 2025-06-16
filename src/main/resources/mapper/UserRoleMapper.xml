@@ -12,8 +12,7 @@
         select distinct p.permission
         from permissions p
                  join role_permission rp on p.id = rp.permission_id
-                 join roles r on r.id = rp.role_id
-                 join user_role ur on ur.role_id = r.id
+                 join user_role ur       on rp.role_id = ur.role_id
         where ur.user_id = #{id}
     </select>
 </mapper>
