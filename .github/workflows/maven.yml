@@ -22,7 +22,7 @@ jobs:
 
       - name: Replace placeholder with password in application-prod.yml
         run: |
-          sed -i "s/-替换1/${{ secrets.PASSWORD }}/" src/main/resources/application-prod.yml
+          sed -i "s/-替换3/${{ secrets.PASSWORD }}/" src/main/resources/application-prod.yml
 
 
       # Step 3: 安装 JDK 17
