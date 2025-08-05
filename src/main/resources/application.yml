@@ -12,11 +12,11 @@ spring:
       # Redis 数据库索引（默认为0）
       database: 0
       # Redis 服务器地址
-      host: ${project.url}
+      host: ${redis.url}
       # Redis 服务器连接端口
       port: 6379
       # Redis 服务器连接密码（默认为空）
-      password: ${project.password}
+      password: ${redis.password}
       # 连接超时时间
       timeout: 10s
       lettuce:
@@ -31,9 +31,9 @@ spring:
           min-idle: 0
 
   datasource:
-    url: jdbc:mysql://${project.url}:3306/-替换1?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
+    url: jdbc:mysql://${mysql.url}:3306/-替换1?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
     username: root
-    password: ${project.password}
+    password: ${mysql.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   main:
@@ -67,7 +67,7 @@ sa-token:
   token-name: satoken--替换2
   # 是否读取 cookie 和 body 中的 token，全部不读
   # 前端只往请求头写token
-  # 后端不写入响应头token
+  # 后端不写入响应头token，会在登录时手动放在响应体里返回token
   # tokenname就是上面配置的
   is-read-cookie: false
   is-read-body: false

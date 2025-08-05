@@ -1,6 +1,9 @@
 logging:
   file:
     name: /app/logs  # 日志文件名，全路径
-project:
-  url: -替换1
-  password: -替换3
+mysql:
+  url: mysql
+  password: -替换1
+redis:
+  url: redis
+  password: -替换2
