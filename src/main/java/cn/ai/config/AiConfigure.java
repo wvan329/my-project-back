@@ -18,7 +18,8 @@ public class AiConfigure {
                 .defaultAdvisors(
                         new SimpleLoggerAdvisor()
 //                        ,
-//                        MessageChatMemoryAdvisor.builder(chatMemory).build())
+//                        MessageChatMemoryAdvisor.builder(chatMemory).build()
+                        )
                 .build();
     }
 
