@@ -89,7 +89,7 @@
     </appender>
 
     <springProfile name="dev">
-        <logger name="cn.mp.mapper" level="DEBUG" additivity="false">
+        <logger name="cn.satoken.mapper" level="DEBUG" additivity="false">
             <appender-ref ref="console_debug"/>
             <appender-ref ref="debug"/>
         </logger>
@@ -100,7 +100,7 @@
     </springProfile>
 
     <springProfile name="prod">
-        <logger name="cn.mp.mapper" level="DEBUG" additivity="false">
+        <logger name="cn.satoken.mapper" level="DEBUG" additivity="false">
             <appender-ref ref="debug"/>
         </logger>
         <root level="error">

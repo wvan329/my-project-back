@@ -7,3 +7,5 @@ mysql:
 redis:
   url: -替换3
   password: -替换4
+ai:
+  key: -替换5

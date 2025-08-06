@@ -39,12 +39,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Result handleHttpMessageNotReadable(HttpMessageNotReadableException e) {
         Throwable cause = e.getCause();
+
+        //请求体没输入，cause是null
+        if (cause == null) {
+            return Result.error("请输入请求体");
+        }
         // Jackson 类型格式错误：如日期格式错误.
         // 某某字段的格式错误,比如数字给了abc,日期格式不符合要求(日期解析标准在配置类中配置了objectmapper)
         if (cause instanceof InvalidFormatException ife) {
             Object value = ife.getValue();
             StringJoiner fieldName = new StringJoiner("下的"); // 获取字段路径
-            ife.getPath().get(0).getFieldName();
             for (JsonMappingException.Reference reference : ife.getPath()) {
                 fieldName.add(reference.getFieldName());
             }
@@ -54,7 +58,6 @@ public class GlobalExceptionHandler {
         // Jackson 输入结构错误：如某个字段名输入错误,user写成usr
         if (cause instanceof MismatchedInputException mie) {
             StringJoiner fieldName = new StringJoiner("下的"); // 获取字段路径
-            mie.getPath().get(0).getFieldName();
             for (JsonMappingException.Reference reference : mie.getPath()) {
                 fieldName.add(reference.getFieldName());
             }
@@ -82,6 +85,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @Validated 参数级校验失败（如 @RequestParam）,可以校验list集合.
+     * 这个就是参数是@Valid @RequestBody List<Login> login，如果报错会走这个异常
      * 如: 参数校验错误:xxx
      */
     @ExceptionHandler(ConstraintViolationException.class)
