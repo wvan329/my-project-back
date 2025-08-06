@@ -60,7 +60,9 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                                     );
                             //每次登录给 token 续期，432000表示5天
                             StpUtil.renewTimeout(432000);
-                        }).isAnnotation(false)//关闭拦截器的注解功能,用aop
+                    //关闭拦截器的注解功能,用aop.拦截器只校验controller方法上的权限注解，而aop会校验所有方法上的权限注解
+                    //如果不关闭拦截器的注解，controller方法上的就会被校验两次
+                        }).isAnnotation(false)
                 )
                 .excludePathPatterns("/login", "/register", "/getCaptcha")
                 .addPathPatterns("/**");

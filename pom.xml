@@ -8,7 +8,7 @@
         <version>3.5.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>cn.boot</groupId>
+    <groupId>cn.auto</groupId>
     <artifactId>-替换1</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <properties>
