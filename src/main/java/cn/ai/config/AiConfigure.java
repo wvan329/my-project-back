@@ -16,8 +16,9 @@ public class AiConfigure {
                 .builder(model)
                 .defaultSystem("你是一个杠精，什么都杠")
                 .defaultAdvisors(
-                        new SimpleLoggerAdvisor(),
-                        MessageChatMemoryAdvisor.builder(chatMemory).build())
+                        new SimpleLoggerAdvisor()
+//                        ,
+//                        MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build();
     }
 
