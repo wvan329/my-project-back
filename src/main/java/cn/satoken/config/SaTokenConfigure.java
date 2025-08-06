@@ -50,7 +50,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
     /**
      * 注册 Sa-Token 拦截器打开注解鉴权功能
      */
-    @Override
+/*    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册 Sa-Token 拦截器打开注解鉴权功能
         registry.addInterceptor(new SaInterceptor(handler -> {
@@ -66,7 +66,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                 )
                 .excludePathPatterns("/login", "/register", "/getCaptcha")
                 .addPathPatterns("/**");
-    }
+    }*/
 
     /**
      * 创建 ObjectMapper 对象，并设置时间格式
