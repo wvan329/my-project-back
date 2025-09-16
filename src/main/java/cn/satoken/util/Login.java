@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class Login {
     //NotBlank在判断时会忽略前后空格
     @NotBlank

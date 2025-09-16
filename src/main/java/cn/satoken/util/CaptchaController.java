@@ -28,14 +28,14 @@ public class CaptchaController {
         // 2. 生成唯一验证码ID
         String captchaId = UUID.randomUUID().toString();
         //todo 注释掉
-        System.out.printf("""
-                "captchaId": "%s",
-                "captcha": "%s"
-                """, captchaId, captcha.getCode());
+//        System.out.printf("""
+//                "captchaId": "%s",
+//                "captcha": "%s"
+//                """, captchaId, captcha.getCode());
 
         // 3. 把验证码文字存到Redis，单位秒， todo改成5分钟
-//        redis.set("captcha:" + captchaId, captcha.getCode(), 300);
-        redis.set("captcha:" + captchaId, captcha.getCode());
+        redis.set("captcha:" + captchaId, captcha.getCode(), 300);
+//        redis.set("captcha:" + captchaId, captcha.getCode());
 
         // 4. 把图片转Base64字符串
         String base64Img = Base64.getEncoder().encodeToString(captcha.getImageBytes());
@@ -53,7 +53,7 @@ public class CaptchaController {
             throw new MyException("验证码已过期");
         }
         //todo打开，把验证码删了
-//        redis.delete("captcha:" + captchaId);
+        redis.delete("captcha:" + captchaId);
         if (!code.equalsIgnoreCase(inputCode)) {
             throw new MyException("验证码错误");
         }

@@ -8,4 +8,5 @@ redis:
   url: -替换3
   password: -替换4
 ai:
-  key: -替换5
+  deep-key: -替换5
+  ali-key: -替换6
