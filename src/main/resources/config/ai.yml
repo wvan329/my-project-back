@@ -1,10 +1,10 @@
 spring:
   ai:
-    mcp:
-      client:
-        request-timeout: 60000
-        stdio:
-          servers-configuration: classpath:/ai/mcp-servers-config.json
+#    mcp:
+#      client:
+#        request-timeout: 60000
+#        stdio:
+#          servers-configuration: classpath:/ai/mcp-servers-config.json
     #        sse:
     #          connections:
     #            server1:
