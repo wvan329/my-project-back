@@ -23,7 +23,7 @@ public class CaptchaController {
     @GetMapping("/getCaptcha")
     public Result getCaptcha() {
         // 1. 生成验证码图片
-        LineCaptcha captcha = CaptchaUtil.createLineCaptcha(200, 100);
+        LineCaptcha captcha = CaptchaUtil.createLineCaptcha(120, 40, 4, 10);
 
         // 2. 生成唯一验证码ID
         String captchaId = UUID.randomUUID().toString();
