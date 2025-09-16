@@ -23,7 +23,7 @@ sa-token:
   # 打印 banner
   is-print: false
   # token 名称（同时也是 cookie 名称）
-  token-name: satoken-ai
+  token-name: satoken--替换1
   # 是否读取 cookie 和 body 中的 token，全部不读
   # 前端只往请求头写token
   # 后端不写入响应头token，会在登录时手动放在响应体里返回token
