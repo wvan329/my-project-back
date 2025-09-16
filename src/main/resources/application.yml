@@ -14,3 +14,7 @@ spring:
       - "classpath:config/sa-token.yml"
       - "classpath:config/ai.yml"
       - "classpath:config/data.yml"
+
+logging:
+  file:
+    name: logs  # 日志文件名，全路径
