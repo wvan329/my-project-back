@@ -40,6 +40,13 @@ public class UsersController {
         return usersService.login(login);
     }
 
+    // 登出
+    @GetMapping("/logout")
+    public Result logout() {
+        StpUtil.logout();
+        return Result.ok();
+    }
+
     // 开启二级认证
     @GetMapping("/openSafe")
     public Result openSafe(String password) {
