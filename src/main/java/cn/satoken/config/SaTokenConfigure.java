@@ -64,7 +64,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                     //如果不关闭拦截器的注解，controller方法上的就会被校验两次
                         }).isAnnotation(false)
                 )
-                .excludePathPatterns("/login", "/register", "/getCaptcha")
+                .excludePathPatterns("/login", "/logout","/register", "/getCaptcha")
                 .addPathPatterns("/**");
     }
 
