@@ -20,4 +20,6 @@ public interface IUsersService extends IService<Users> {
     Result login(Login login);
 
     Result openSafe(String password);
+
+    Result getUserList(String search,Long pageNo,  Long pageSize);
 }

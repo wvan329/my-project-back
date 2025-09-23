@@ -20,6 +20,7 @@ import cn.dev33.satoken.util.SaFoxUtil;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -90,6 +91,13 @@ public class Result extends LinkedHashMap<String, Object> implements Serializabl
 
     public static Result data(Object data) {
         return new Result(CODE_SUCCESS, "ok", data);
+    }
+
+    public static Result data(Long total, Object data) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("total", total);
+        map.put("data", data);
+        return new Result(CODE_SUCCESS, "ok", map);
     }
 
     // 构建失败

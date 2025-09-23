@@ -2,7 +2,8 @@ package cn.satoken.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -27,6 +28,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Accessors(chain = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Users implements Serializable {
 
     @Serial
@@ -48,7 +50,7 @@ public class Users implements Serializable {
     //@NotBlank 不加notblank, 这样这个值没传不会检测@Size(min = 6, max = 16)
     // 但空字符串会检测长度，可以把@size去掉，在改密码的时候手动校验
     @Size(min = 6, max = 16)
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private LocalDateTime birthday;

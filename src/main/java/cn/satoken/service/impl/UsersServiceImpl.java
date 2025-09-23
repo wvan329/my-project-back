@@ -3,6 +3,7 @@ package cn.satoken.service.impl;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import cn.satoken.entity.Roles;
 import cn.satoken.entity.UserRole;
@@ -12,13 +13,13 @@ import cn.satoken.mapper.UsersMapper;
 import cn.satoken.service.IRolesService;
 import cn.satoken.service.IUserRoleService;
 import cn.satoken.service.IUsersService;
-import cn.satoken.util.CaptchaController;
-import cn.satoken.util.Login;
-import cn.satoken.util.MyException;
-import cn.satoken.util.Result;
+import cn.satoken.util.*;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     private UserRoleMapper userRoleMapper;
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public Result register(Login login) {
         // 校验验证码
         captchaController.verifyCaptcha(login.getCaptchaId(), login.getCaptcha());
@@ -51,7 +53,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         }
         //注册用户
         Users user = Users.builder().username(login.getUsername())
-                .password(BCrypt.hashpw(login.getPassword()))
+                .password(BCrypt.hashpw(login.getPassword(), BCrypt.gensalt()))
                 .birthday(login.getBirthday())
                 .build();
         save(user);
@@ -64,6 +66,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
+    @Transactional(rollbackFor = Throwable.class)
     public Result login(Login login) {
         // 校验验证码
         captchaController.verifyCaptcha(login.getCaptchaId(), login.getCaptcha());
@@ -97,4 +100,22 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         // 如果密码校验失败，则二级认证也会失败
         throw new MyException("二级校验失败");
     }
+
+    @Override
+    @MyPage
+    public Result getUserList(String search, Long pageNo, Long pageSize) {
+        LambdaQueryChainWrapper<Users> wrapper = lambdaQuery().like(StrUtil.isNotBlank(search), Users::getUsername, search);
+        if (pageNo.equals(-1L)) {
+            pageNo = 1L;
+            pageSize = wrapper.count();
+        }
+        Page<Users> page = wrapper.page(Page.of(pageNo, pageSize));
+        for (Users user : page.getRecords()) {
+            List<String> roles = userRoleMapper.getRolesByUserId(user.getId());
+            List<String> permissions = userRoleMapper.getPermissionsByUserId(user.getId());
+            user.setRoles(roles).setPermissions(permissions);
+        }
+        return Result.data(page.getTotal(), page.getRecords());
+    }
+
 }
