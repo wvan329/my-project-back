@@ -50,6 +50,9 @@ public class UsersController {
         if (user.getId() == null) {
             // 新增用户，才加密密码
             user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+        } else {
+            // 修改用户，不加密密码
+            user.setPassword(null);
         }
         usersService.saveOrUpdate(user);
         return Result.ok();
