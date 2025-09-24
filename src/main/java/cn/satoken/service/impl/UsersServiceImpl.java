@@ -13,7 +13,10 @@ import cn.satoken.mapper.UsersMapper;
 import cn.satoken.service.IRolesService;
 import cn.satoken.service.IUserRoleService;
 import cn.satoken.service.IUsersService;
-import cn.satoken.util.*;
+import cn.satoken.util.CaptchaController;
+import cn.satoken.util.Login;
+import cn.satoken.util.MyException;
+import cn.satoken.util.Result;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,7 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -74,25 +80,36 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         if (ObjUtil.isEmpty(user)) {
             throw new MyException("用户名不存在");
         }
-        List<String> roles = userRoleMapper.getRolesByUserId(user.getId());
-        List<String> permissions = userRoleMapper.getPermissionsByUserId(user.getId());
+        setRoleAndPermissions(user);
         //校验用户名密码
         if (BCrypt.checkpw(login.getPassword(), user.getPassword())) {
             StpUtil.login(user.getId());
             SaSession session = StpUtil.getSession();
             session.set("user", user);
-            session.set("password", user.getPassword());
-            session.set("roles", roles);
-            session.set("permissions", permissions);
-            return Result.data(user.setToken(StpUtil.getTokenValue())
-                    .setRoles(roles).setPermissions(permissions));
+            return Result.data(user.setToken(StpUtil.getTokenValue()));
         }
         throw new MyException("密码错误");
     }
 
+    public void setRoleAndPermissions(Users user) {
+        List<UserRole> roleIds = userRoleService.lambdaQuery().eq(UserRole::getUserId, user.getId()).list();
+        List<Roles> roleList = new ArrayList<>();
+        if (ObjUtil.isNotEmpty(roleIds)) {
+            roleList = rolesService.lambdaQuery().in(Roles::getId, roleIds.stream().map(UserRole::getRoleId).toList()).list();
+        }
+        List<String> roles = roleList.stream().map(Roles::getRole).toList();
+        Set<String> permissions = new HashSet<>();
+        for (Roles role : roleList) {
+            if (ObjUtil.isNotEmpty(role.getPermissions())) {
+                permissions.addAll(role.getPermissions());
+            }
+        }
+        user.setRoles(roles).setPermissions(new ArrayList<>(permissions));
+    }
+
     @Override
     public Result openSafe(String password) {
-        if (BCrypt.checkpw(password, (String) StpUtil.getSession().get("password"))) {
+        if (BCrypt.checkpw(password, ((Users) StpUtil.getSession().get("user")).getPassword())) {
             // 比对成功，为当前会话打开二级认证，有效期为120秒
             StpUtil.openSafe(120);
             return Result.ok();
@@ -102,7 +119,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     }
 
     @Override
-    @MyPage
+//    @MyPage
     public Result getUserList(String search, Long pageNo, Long pageSize) {
         LambdaQueryChainWrapper<Users> wrapper = lambdaQuery().like(StrUtil.isNotBlank(search), Users::getUsername, search);
         if (pageNo.equals(-1L)) {
@@ -111,9 +128,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         }
         Page<Users> page = wrapper.page(Page.of(pageNo, pageSize));
         for (Users user : page.getRecords()) {
-            List<String> roles = userRoleMapper.getRolesByUserId(user.getId());
-            List<String> permissions = userRoleMapper.getPermissionsByUserId(user.getId());
-            user.setRoles(roles).setPermissions(permissions);
+            setRoleAndPermissions(user);
         }
         return Result.data(page.getTotal(), page.getRecords());
     }

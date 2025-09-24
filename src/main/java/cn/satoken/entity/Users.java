@@ -41,7 +41,7 @@ public class Users implements Serializable {
      * 用户名
      */
     @NotBlank
-    @Size(min = 6, max = 16)
+    @Size(min = 4, max = 16)
     private String username;
 
     /**

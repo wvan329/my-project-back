@@ -3,6 +3,8 @@ package cn.satoken.mapper;
 import cn.satoken.entity.RolePermission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface RolePermissionMapper extends BaseMapper<RolePermission> {
 
+//    List<String> getPermissionsByUserId(Long id);
 }

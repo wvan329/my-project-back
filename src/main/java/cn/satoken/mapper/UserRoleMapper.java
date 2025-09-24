@@ -1,5 +1,6 @@
 package cn.satoken.mapper;
 
+import cn.satoken.entity.Roles;
 import cn.satoken.entity.UserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public interface UserRoleMapper extends BaseMapper<UserRole> {
 
-    List<String> getRolesByUserId(Long id);
+    List<Roles> getRolesByUserId(Long id);
 
-    List<String> getPermissionsByUserId(Long id);
+//    List<String> getPermissionsByUserId(Long id);
 }

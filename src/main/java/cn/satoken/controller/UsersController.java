@@ -1,11 +1,13 @@
 package cn.satoken.controller;
 
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.annotation.SaCheckSafe;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.crypto.digest.BCrypt;
 import cn.satoken.entity.Users;
+import cn.satoken.mapper.UserRoleMapper;
 import cn.satoken.service.IUsersService;
 import cn.satoken.util.Login;
 import cn.satoken.util.Result;
@@ -30,6 +32,8 @@ import java.util.List;
 public class UsersController {
     @Autowired
     private IUsersService usersService;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     //删除用户
     @DeleteMapping("/deleteUser")
@@ -37,11 +41,12 @@ public class UsersController {
         usersService.removeBatchByIds(ids);
         return Result.ok();
     }
-    
+
     //获取用户分页列表
-    @GetMapping("/getUserList/{pageNo}/{pageSize}")
-    public Result getUserList(String search, @PathVariable Long pageNo, @PathVariable Long pageSize) {
-        return usersService.getUserList(search,pageNo, pageSize);
+    @SaCheckPermission("user")
+    @GetMapping("/getUserList")
+    public Result getUserList(String search, Long pageNo, Long pageSize) {
+        return usersService.getUserList(search, pageNo, pageSize);
     }
 
     // 新增或修改用户信息

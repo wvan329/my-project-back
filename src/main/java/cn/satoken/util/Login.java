@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class Login {
     //NotBlank在判断时会忽略前后空格
     @NotBlank
-    @Size(min = 6, max = 16)
+    @Size(min = 4, max = 16)
     private String username;
     @NotBlank
     @Size(min = 6, max = 16)
